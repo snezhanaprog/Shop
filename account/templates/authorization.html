@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Авторизация{% endblock %}
+{% block css%}
+<link rel="stylesheet" type="text/css" href="{% static 'css/authorization.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/interface.css' %}">
+{% endblock css%}
+{% block content %}
+
+<div class="main">
+    <div class="container">
+        <div class="form">
+            <div class="form-inner-content">
+                <h1 class="form__main-title">Авторизация</h1>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form__inputs-list">
+                        <div class="form__item">
+                            <input type="text" class="form__item__input" placeholder="Имя" name="username">
+                        </div>
+                        <div class="form__item">
+                            <input type="password" class="form__item__input" placeholder="Пароль" name="password">
+                        </div>
+                    </div>
+                    {% if message != None %}
+                            <div class="message-invalid">{{message}}</div>
+                    {% endif %}
+                    <button type="submit" class="form__button">Войти</button>
+
+                </form>
+                <a href="{% url 'registration' %}" class="link__registration">Не зарегистрирован? Регистрируйся!</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock content %}

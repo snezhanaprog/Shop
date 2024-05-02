@@ -1,0 +1,18 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block css%}
+<link rel="stylesheet" type="text/css" href="{% static 'css/interface.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/header.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/contacts.css' %}">
+{% endblock css%}
+{% block userinfo %}
+<h3>{{user.username}}</h3>
+<p>{{user.email}}</p>
+{% endblock userinfo %}
+{% block content %}
+
+{% for msg in messages %}
+<p class="achivment-event">{{msg}}</p>
+{% endfor %}
+
+{% endblock content %}

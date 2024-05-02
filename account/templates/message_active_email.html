@@ -1,0 +1,5 @@
+
+{% load static %}
+Привет, {{ user.username }},
+Перейди по ссылке для подтверждения
+{{ request.scheme }}://{{ domain }}{% url 'activate' uidb64=uid token=token %}

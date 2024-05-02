@@ -1,0 +1,51 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    height: 100vh;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: center;
+}
+
+form label {
+    font-family: 'Inter h2', sans-serif;
+    font-size: 92px;
+    text-align: center;
+}
+
+.create-comment__input {
+    width: 30vw;
+
+    padding: 12px;
+
+    font-family: 'Inter p-big', sans-serif;
+    font-size: 24px;
+
+    background: var(--Black);
+    color: var(--White);
+
+    border: none;
+    border-radius: 12px;
+}
+
+.create-comment__submit {
+    width: 40vw;
+    padding: 12px;
+
+    border: none;
+    border-radius: 16px;
+
+    background: var(--Black);
+    color: var(--White);
+
+    font-family: 'Inter p-big', sans-serif;
+    font-size: 24px;
+
+    cursor: pointer;
+}

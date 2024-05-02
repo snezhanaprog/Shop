@@ -1,0 +1,43 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block userinfo %}
+<h3>{{user.username}}</h3>
+<p>{{user.email}}</p>
+{% endblock userinfo %}
+{% block content %}
+
+{% for msg in messages %}
+<p class="achivment-event">{{msg}}</p>
+{% endfor %}
+
+{% block css%}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/interface.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/header.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/create-comments.css' %}">
+{% endblock css%}
+<main>
+    <div class="container container-create-comment">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="comment-body">Содержание отзыва:</label>
+            <input type="text" name="comment-body" minlength="25" maxlength="100" class="create-comment__input"/>
+            <!--   <input name="image" type="file" accept=".jpg, .jpeg">-->
+            <input type="submit" value="Отправить" class="create-comment__submit"/>
+        </form>
+    </div>
+
+</main>
+<footer>
+    <a href="https://github.com/Erubarm">
+        <img src="{% static 'icons/icon-github.svg' %}" alt="github icon">
+    </a>
+    <a href="https://t.me/KKom3 ">
+        <img src="{% static 'icons/icon-telegram.svg' %}" alt="telegram icon">
+    </a>
+    <a href="https://vk.com/pomianem_xex">
+        <img src="{% static 'icons/icon-vk.svg' %}" alt="VK icon">
+    </a>
+</footer>
+
+{% endblock content %}

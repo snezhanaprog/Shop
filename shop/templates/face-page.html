@@ -1,0 +1,81 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block css%}
+<link rel="stylesheet" type="text/css" href="{% static 'css/interface.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/header.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/face-page.css' %}">
+{% endblock css%}
+{% block userinfo %}
+<h3>{{user.username}}</h3>
+<p>{{user.email}}</p>
+{% endblock userinfo %}
+{% block content %}
+
+{% for msg in messages %}
+<p class="achivment-event">{{msg}}</p>
+{% endfor %}
+
+<main>
+
+    <section class="block1">
+        <div class="container-face">
+            <div class="block__picture">
+                <img class="picture" src="{% static 'images/block2-facepage.JPG' %}">
+            </div>
+            <div class="block__title">
+                <h1>Откройте мир моды с iteenager - <em>ваш выбор дизайнерской одежды</em></h1>
+                <p>[Мы - ваш идеальный источник для самовыражения. Не упустите шанс обновить свой гардероб вместе с
+                    iteenager!]</p>
+            </div>
+        </div>
+    </section>
+    <section class="block2">
+        <div class="container-face">
+            <div class="block__picture">
+                <img class="picture" src="{% static 'images/block1-facepage.JPG' %}">
+            </div>
+            <div class="block__title">
+                <h1>Простота - <em>залог надежности</em></h1>
+                <p>[Эксклюзивные коллекции для стильных и уверенных в себе]</p>
+            </div>
+        </div>
+
+    </section>
+    <section class="block3">
+        <div class="container-face">
+            <div class="block__title">
+                <h1>Путь заказа - <em>путь самовывоза</em></h1>
+                <p>
+                    [Уважаемые покупатели! В нашем магазине доступен самовывоз товаров. Это означает, что вы можете
+                    самостоятельно забрать свой заказ. Все детали обсуждаются при оформлении заказа. Мы надеемся, что
+                    это сделает процесс покупки еще более удобным для вас.]
+                </p>
+
+                <a href="{% url 'store' %}">Смотреть каталог</a>
+
+            </div>
+            <div class="block__picture">
+                <img class="picture" src="{% static 'images/block3-facepage.JPG' %}">
+            </div>
+        </div>
+    </section>
+
+    </div>
+    <div class="line-button-page-up">
+        <button class="pageUp"><img src="/static/icons/arrowSort-up.svg" alt="arrow up"></button>
+    </div>
+</main>
+<footer>
+    <a href="https://github.com/Erubarm">
+        <img src="{% static 'icons/icon-github.svg' %}" alt="github icon">
+    </a>
+    <a href="https://t.me/KKom3 ">
+        <img src="{% static 'icons/icon-telegram.svg' %}" alt="telegram icon">
+    </a>
+    <a href="https://vk.com/pomianem_xex">
+        <img src="{% static 'icons/icon-vk.svg' %}" alt="VK icon">
+    </a>
+</footer>
+
+<script src="{% static 'js/arrowUpPage.js' %}"></script>
+{% endblock content %}

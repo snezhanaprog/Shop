@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Подтверждение{% endblock %}
+{% block css%}
+<link rel="stylesheet" type="text/css" href="{% static 'css/confirm.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/interface.css' %}">
+{% endblock css%}
+{% block content %}
+<div class="main">
+    <div class="container">
+        <h2>Вы успешно подтвредили почту!</h2>
+        <a href="{% url 'authorization' %}" class="link__registration link__auth">Войти</a>
+    </div>
+</div>
+{% endblock content %}

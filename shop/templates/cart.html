@@ -1,0 +1,152 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block css%}
+<link rel="stylesheet" type="text/css" href="{% static 'css/interface.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/header.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/cart.css' %}">
+{% endblock css%}
+{% block userinfo %}
+<h3>{{user.username}}</h3>
+<p>{{user.email}}</p>
+{% endblock userinfo %}
+{% block content %}
+
+{% for msg in messages %}
+<span class="achivement-event">{{msg}}</span>
+{% endfor %}
+
+<div class="main">
+    <div class="container container-cart">
+        <h1>Корзина</h1>
+        {% for order_product in order_products %}
+        <div class="cart__order-product">
+
+            <img class="order-product__img" src="{{order_product.product.image.url}}"/>
+
+            <p class="order-product__title">{{order_product.product.name}}</p>
+            <div class="order-product__size">
+                <span>Размер</span>
+                <span>XL</span>
+            </div>
+            <div class="order-product__quantity">
+                <span>Кол-во</span>
+                <div class="order-product__quantity__count">
+                    <button class="quantity__minus actionBtn" data-action="remove"
+                            data-product="{{order_product.product.id}}">-
+                    </button>
+                    <p class="quantity__digit">{{order_product.quantity}}</p>
+
+
+                    <button class="quantity__plus actionBtn" data-action="add"
+                            data-product="{{order_product.product.id}}">
+                        +
+                    </button>
+                </div>
+
+            </div>
+            <div class="order-product__cost">
+                <span>Стоимость</span>
+                <span class="order-product__cost__number">{{order_product.product.price|floatformat:0}}</span>
+            </div>
+            <button class="quantity__delete actionBtn" data-action="remove-all"
+                    data-product="{{order_product.product.id}}">
+                <img src="{% static 'icons/delete-icon.svg' %}" alt="">
+            </button>
+            <!--            <p class="order-product__total"></p>-->
+        </div>
+        {% endfor %}
+        <div class="cart__result">
+            <!--            <div>Товары <p>{{order.get_cart_total_quantity}}</p></div>-->
+            <div class="result__cost">
+                <div class="result"><span>Стоимость</span><span class="result__number">{{order.get_cart_total|floatformat:0}}</span>
+                </div>
+                {% if count_orderproducts > 5 %}
+                <div class="result"><span>Скидка при покупке более 5 товаров </span><span
+                        class="result__number">5%</span></div>
+                <div class="result"><span>К оплате</span><span class="result__number">{{count}}</span>
+                    {% else %}
+                    <div class="result"><span>Скидка </span><span class="result__number">0%</span></div>
+                    <div class="result"><span>К оплате</span><span
+                            class="result__number">{{order.get_cart_total}}</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="cart-buttons-block">
+                    <div class="cart-buttons-list">
+                        <a class="cart-button-back" href="{% url 'store' %}">Вернуться к каталогу</a>
+                        <a class="cart-button-order" href="{% url 'checkout' %}">Заказать</a>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="line-button-page-up">
+            <button class="pageUp"><img src="/static/icons/arrowSort-up.svg" alt="arrow up"></button>
+        </div>
+    </div>
+    <footer>
+        <a href="https://github.com/Erubarm">
+            <img src="{% static 'icons/icon-github.svg' %}" alt="github icon">
+        </a>
+        <a href="https://t.me/KKom3 ">
+            <img src="{% static 'icons/icon-telegram.svg' %}" alt="telegram icon">
+        </a>
+        <a href="https://vk.com/pomianem_xex">
+            <img src="{% static 'icons/icon-vk.svg' %}" alt="VK icon">
+        </a>
+    </footer>
+
+    <script src="{% static 'js/arrowUpPage.js' %}"></script>
+    <script>
+        var actionBtns = document.querySelectorAll('.actionBtn');
+
+        const getCookie = (name) => {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    let cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                    ;
+                }
+                ;
+            }
+            ;
+            return cookieValue;
+        };
+
+        var csrftoken = getCookie('csrftoken');
+        console.log(csrftoken);
+        const addProductInOrder = (productId, action) => {
+            let url = '/cart/add_item/';
+
+            fetch(url, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json', 'X-CSRFToken': csrftoken},
+                body: JSON.stringify({'productId': productId, 'action': action})
+            }).then((response) => {
+                return response.json();
+            })
+                .then((data) => {
+                    location.reload();
+                });
+
+        };
+
+        actionBtns.forEach((btn) => {
+            btn.addEventListener('click', () => {
+                var productId = btn.dataset.product;
+                var action = btn.dataset.action;
+                console.log('productId:', productId, 'action:', action);
+                addProductInOrder(productId, action);
+            });
+
+        });
+
+    </script>
+    {% endblock content %}

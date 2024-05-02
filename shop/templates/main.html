@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ru">
+{% load static %}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Shop</title>
+    {% block css%}
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/interface.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="icon" href="{% static 'icons/logo_32x32.png' %}">
+    {% endblock css%}
+</head>
+<body>
+<header>
+    <nav class="header-navigation">
+        <!-- TODO ссылка на главную страницу -->
+
+        <a href="{% url 'face-page' %}" class="active-text"><img src="{% static 'icons/logo.svg' %}"
+                                                                 alt="logo iteenager">iteenager</a>
+        <a href="{% url 'store' %}">Каталог</a>
+
+        {% if request.user.is_authenticated %}
+
+        {% else %}
+        <a href="{% url 'authorization' %}">Авторизация</a>
+        <a href="{% url 'registration' %}">Регистрация</a>
+        {% endif %}
+    </nav>
+    <div class="header__profile">
+        <a href="{% url 'cart'  %}" class="header__profile-cart"><img src="/static/icons/icon-profile.svg" alt=""></a>
+        <button class="header__profile-user">
+            <img src="/static/icons/icon-cart.svg" alt="icon-cart">
+            <ul class="profile-user__content profile-user__hide">
+                <li class="profile-user__info-block">
+                    <img src="{% static 'icons/icon-cart.svg' %}" alt="icon profile">
+                    <div class="profile-user__info-description">
+                       {% block userinfo %}
+                        <h3>{{user.username}}</h3>
+                        <p>{{user.email}}</p>
+                        {% endblock userinfo %}
+                    </div>
+                </li>
+                <li><a href="{% url 'feedback' %}">Обратная связь</a></li>
+                <li><a href="{% url 'achievements' %}">Достижение</a></li>
+                {% if request.user.is_authenticated %}
+                <li><a href="{% url 'exit' %}">Выход</a></li>
+                {% endif %}
+            </ul>
+        </button>
+
+    </div>
+</header>
+
+{% block content %}
+{% endblock content%}
+<script type="text/javascript" src="{% static 'js/header.js' %}"></script>
+</body>
+</html>

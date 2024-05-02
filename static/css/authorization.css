@@ -1,0 +1,88 @@
+.form {
+
+    background: var(--Black);
+    color: var(--White);
+
+}
+
+.form-inner-content {
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.form__main-title {
+    margin: 0px;
+    text-align: center;
+    font-family: 'Inter title', sans-serif;
+    font-size: 96px;
+}
+
+form {
+    margin-top: 88px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.form__inputs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 72px;
+
+    width: 28vw;
+}
+
+@media (max-width: 1200px) {
+    .form__inputs-list {
+        width: 38vw;
+    }
+}
+
+@media (max-width: 900px) {
+    .form__main-title {
+
+    }
+}
+
+.form__item input{
+    width: 100%;
+    border: none;
+    background: inherit;
+    border-bottom: 2px solid var(--White);
+
+    outline: none;
+
+    color: var(--White);
+    font-family: 'Inter p-big', sans-serif;
+
+    border-radius: 5px;
+    font-size: 24px;
+}
+
+form button {
+    margin-top: 72px;
+    padding: 26px 92px;
+    background: var(--White);
+    color: var(--Black);
+    border: none;
+    border-radius: 16px;
+
+    font-family: 'Inter h3', sans-serif;
+    cursor: pointer;
+
+}
+
+.form-inner-content a {
+    margin-top: 48px;
+    font-family: 'Inter p-small', sans-serif;
+    color: var(--Blue-100);
+    text-decoration: none;
+}

@@ -1,0 +1,271 @@
+h1 {
+    color: var(--Black);
+    margin: 0;
+}
+
+form {
+    margin-top: 32px;
+
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+@media (max-width: 1115px) {
+    form {
+        flex-direction: column;
+        align-items: center;
+    }
+    .store-search {
+        width: fit-content;
+    }
+}
+
+.container-main {
+    margin: 0px 128px;
+}
+
+.main {
+    margin-top: 48px;
+}
+
+.main h1 {
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+
+}
+
+.store-search {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    border: 2px solid var(--Grey-200);
+    border-radius: 5px;
+
+    padding: 4px;
+}
+
+.store-search__input {
+    height: 24px;
+    font-family: 'Inter p-big', sans-serif;
+    font-size: 24px;
+
+    border: none;
+
+    outline: none;
+
+    background: inherit;
+}
+
+.store-search button {
+    background: inherit;
+    border: none;
+
+    cursor: pointer;
+}
+
+.filter {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+
+    color: var(--White);
+    font-family: 'Inter p-big',sans-serif;
+    font-size: 16px;
+
+    padding: 20px 47px;
+    border: none;
+    border-radius: 16px;
+    background: var(--Black);
+
+    cursor: pointer;
+
+}
+
+.sort {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+
+    font-family: 'Inter title', sans-serif;
+    font-size: 16px;
+    color: var(--Black);
+
+    border: none;
+    background: inherit;
+
+    cursor: pointer;
+}
+
+.sort-list {
+    position: absolute;
+    list-style: none;
+    padding: 18px;
+    margin: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+
+    border-radius: 5px;
+
+    background: var(--Grey-200);
+}
+
+.sort-list li {
+    width: 100%;
+
+}
+
+.sort-list button {
+    width: 100%;
+
+    padding: 0;
+
+    background: inherit;
+    border: none;
+
+    font-family: 'Inter h3', sans-serif;
+    font-size: 16px;
+
+    color: var(--Black);
+
+    cursor: pointer;
+}
+
+.sort-list img {
+    width: 14px;
+    height: 14px;
+}
+
+.sort-list__hide {
+    display: none;
+}
+
+.sort span {
+    font-family: 'Inter h3', sans-serif;
+    font-size: 16px;
+    color: var(--Blue-100);
+}
+.sort button {
+    font-family: 'Inter title', sans-serif;
+    font-size: 16px;
+    color: var(--Black);
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+
+    border: none;
+    background: inherit;
+
+    cursor: pointer;
+}
+
+.container__list-shop {
+
+
+    margin-top: 32px;
+
+    display: flex;
+    flex-direction: row;
+    gap: 18px;
+    justify-content: space-around;
+    flex-wrap: wrap;
+
+    width: 100%;
+}
+
+
+.container__list-shop img {
+    width: 26vw;
+    height: 36vh;
+    object-fit: cover;
+
+
+}
+
+.product__title {
+    color: var(--Black);
+    font-family: 'Inter title', sans-serif;
+    font-size: 24px;
+}
+.product__cost {
+    color: var(--Blue-300);
+    font-family: 'Inter p-big', sans-serif;
+    font-size: 16px;
+    font-style: italic;
+}
+
+.list-shop__product {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.list-shop__product__description {
+    margin-top: 8px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.list-shop__product__description button {
+    height: 45px;
+    width: 160px;
+    border: none;
+    background: var(--Black);
+    color: var(--White);
+    font-family: 'Inter p-big', sans-serif;
+    border-radius: 5px;
+
+    cursor: pointer;
+    transition: 0.5s ease;
+}
+
+.list-shop__product__description button:hover {
+    background: var(--Blue-300);
+}
+.list-shop__product__description button:active {
+    background: var(--Blue-100);
+}
+
+.list-shop__product a {
+    text-decoration: none;
+}
+
+.product__btn-cart  {
+    height: 45px;
+    width: 160px;
+    border: none;
+    background: var(--Blue-300);
+    color: var(--White);
+    font-family: 'Inter p-big', sans-serif;
+    border-radius: 16px;
+
+    cursor: pointer;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    transition: 0.5s ease;
+}
+
+.product__btn-cart:hover {
+    background: var(--Blue-200);
+}
+.product__btn-cart:active {
+    background: var(--Blue-100);
+}
+

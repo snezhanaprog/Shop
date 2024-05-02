@@ -1,0 +1,174 @@
+:root {
+    --Black: #020B18; /* color text*/
+    --White: #fff;
+    --Grey-100: #F0F1F3; /* color background-block*/
+    --Grey-200: #CDD4DA; /* color background-body*/
+    --Blue-100: #B1B8C2; /* color default-text */
+    --Blue-200: #020B18;
+    --Blue-300: #3C6CB0;
+
+}
+
+@font-face {
+    font-family: "Inter h1";
+    src: url("../fonts/Inter-Bold.ttf");
+    font-size: 96px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+@font-face {
+    font-family: "Inter h2";
+    src: url("../fonts/Inter-Bold.ttf");
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+@font-face {
+    font-family: "Inter title";
+    src: url("../fonts/Inter-Bold.ttf");
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+@font-face {
+    font-family: "Inter h3";
+    src: url("../fonts/Inter-Medium.ttf");
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+@font-face {
+    font-family: "Inter p-big";
+    src: url("../fonts/Inter-Regular.ttf");
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+@font-face {
+    font-family: "Inter p-normal";
+    src: url("../fonts/Inter-SemiBold.ttf");
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+@font-face {
+    font-family: "Inter p-small";
+    src: url("../fonts/Inter-SemiBold.ttf");
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+body {
+    background: var(--White);
+}
+
+.main {
+    max-width: 100vw;
+}
+.container {
+
+
+
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+h1 {
+    font-family: "Inter h1", sans-serif;
+}
+h2 {
+    font-family: "Inter h2", sans-serif;
+}
+h3 {
+    font-family: "Inter h3", sans-serif;
+}
+
+body{
+    margin:0;
+}
+
+footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+
+    padding-top: 36px;
+    padding-bottom: 18px;
+}
+
+.default-text {
+    color: var(--Blue-100);
+}
+.active-text {
+    color: var(--Blue-200);
+}
+
+.message-invalid {
+    margin-top: 16px;
+
+    padding: 8px 16px;
+    border-radius: 16px;
+
+    background: #7D1C1C;
+    color: var(--White);
+
+    font-family: 'Inter p-normal', sans-serif;
+    font-size: 12px;
+}
+
+h1,h2,h3,p {
+    margin: 0;
+}
+
+.achivment-event {
+    width: 350px;
+    height: 41px;
+
+    background: var(--Blue-300);
+    color: var(--White);
+
+    font-family: 'Inter p-big', sans-serif;
+    font-size: 24px;
+
+    text-align: center;
+
+    border-radius: 16px;
+
+    padding-top: 12px;
+    margin-left: 128px;
+}
+
+.line-button-page-up {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+
+.line-button-page-up button {
+
+    background: inherit;
+    border: none;
+
+    cursor: pointer;
+}
+
+.hide {
+    display: none;
+}
+
+

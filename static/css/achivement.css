@@ -1,0 +1,48 @@
+.container-achivement {
+    margin: 64px 128px;
+}
+
+.achivement-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 28px;
+
+    width: 100%;
+
+    list-style: none;
+
+    border: none;
+    border-left: 3px solid var(--Grey-200);
+}
+
+.achivement-item {
+    padding: 24px;
+
+    border-radius: 16px;
+
+    color: var(--White);
+    background: var(--Black);
+
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+
+
+.achivement-item__title {
+    font-family: 'Inter h3', sans-serif;
+    color: var(--White);
+
+}
+
+.achivement-item__description, .achivement-item__date {
+    font-family: 'Inter p-big', sans-serif;
+    color: var(--Grey-200);
+}
+
+.achivement-item__date {
+    text-align: end;
+}

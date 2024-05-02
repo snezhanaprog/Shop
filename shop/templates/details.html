@@ -1,0 +1,100 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block css%}
+<link rel="stylesheet" type="text/css" href="{% static 'css/interface.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/header.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/details.css' %}">
+{% endblock css%}
+{% block userinfo %}
+<h3>{{user.username}}</h3>
+<p>{{user.email}}</p>
+{% endblock userinfo %}
+{% block content %}
+
+
+{% for msg in messages %}
+<p class="achivment-event">{{msg}}</p>
+{% endfor %}
+
+<main>
+    <section class="product-detail">
+        <div class="container container-detail">
+            <div class="detail-content">
+                <div class="container__images-slides">
+                    <img class="images-slides__img__main" src="{{product.image.url}}"/>
+                    <div class="images-slides__img__second">
+                        <img class="images-slides__img" src="{{product.image2.url}}"/>
+                        <img class="images-slides__img" src="{{product.image3.url}}"/>
+                    </div>
+                </div>
+                <div class="container__product">
+                    <h1 class="product__title">{{product.name}}</h1>
+                    <p class="product__description">[{{product.description}}]</p>
+                    <span class="product__cost">{{product.price}} ₽</span>
+                    {% if request.user.is_authenticated %}
+                    <div class="product__buttons">
+                        <form method="POST">
+                            {% csrf_token %}
+
+                            <button class="product__btn-add actionBtn" type="submit" id="btn-add">Добавить в корзину
+                            </button>
+                        </form>
+                        <a href="{% url 'create-comment' product.id %}" class="product__buttons__comment">Оставить
+                            отзыв</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--    <div class="container__product">-->
+    <!--        <p class="product__title">{{product.name}}</p>-->
+    <!--        <p class="product__count-comments">{{product.get_count_comments}}</p>-->
+    <!--    </div>-->
+    <section class="product-feedback">
+        <div class="container container__comments">
+            <h2>Опишите свои впечатления</h2>
+            <div class="comment__list">
+                {% for comment in comments %}
+                <div class="comments__item">
+                    <!--                <img class="item__img" src="{{comment.image.url}}"/>-->
+                    <div class="comments__item__user">
+                        <img src="{% static 'icons/icon-cart.svg' %}" alt="icon profile">
+                        <p class="item__name">{{comment.user.username}}</p>
+                    </div>
+                    <p class="item__body">{{comment.body}}</p>
+                    <span class="item__date">{{comment.date_added}}</span>
+                    <!-- TODO добавление звёздочек от 1 до 5 -->
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+</main>
+<footer>
+    <a href="https://github.com/Erubarm">
+        <img src="{% static 'icons/icon-github.svg' %}" alt="github icon">
+    </a>
+    <a href="https://t.me/KKom3 ">
+        <img src="{% static 'icons/icon-telegram.svg' %}" alt="telegram icon">
+    </a>
+    <a href="https://vk.com/pomianem_xex">
+        <img src="{% static 'icons/icon-vk.svg' %}" alt="VK icon">
+    </a>
+</footer>
+
+<script src="{% static 'js/arrowUpPage.js' %}"></script>
+<script>
+    document.querySelector("#btn-add").addEventListener('click', () => {
+        console.log(this);
+        this.outerHTML = "<a href="
+        {%
+            url
+            'cart' %
+        }
+        ">В корзину</a>";
+    });
+</script>
+{% endblock content %}

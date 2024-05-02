@@ -1,0 +1,40 @@
+{% extends 'main.html' %}
+{% load static %}
+    {% block css%}<link rel="stylesheet" type="text/css" href="{% static 'css/comments.css' %}">{% endblock css%}
+{% block userinfo %}
+<h3>{{user.username}}</h3>
+<p>{{user.email}}</p>
+{% endblock userinfo %}
+{% block content %}
+
+{% for msg in messages %}
+<p class="achivment-event">{{msg}}</p>
+{% endfor %}
+
+<div class="container">
+    <div class="container__product">
+        <p class="product__title">{{product.name}}</p>
+        <p class="product__count-comments">{{product.get_count_comments}}</p>
+    </div>
+    <div>
+        <a href="{% url 'create-comment' product.id %}">Добавить комментарий</a>
+    </div>
+
+    <div class="container__comments">
+        {% for comment in comments %}
+        <div class="comments__item">
+            <img class="item__img" src="{{comment.image.url}}"/>
+            <p class="item__name">{{comment.user.username}}</p>
+            <div class="item__body">{{comment.body}}</div>
+            <div class="item__date">{{comment.date_added}}</div>
+            <!-- TODO добавление звёздочек от 1 до 5 -->
+        </div>
+        {% endfor %}
+    </div>
+    <div class="line-button-page-up">
+        <button class="pageUp"><img src="/static/icons/arrowSort-up.svg" alt="arrow up"></button>
+    </div>
+</div>
+
+<script src="{% static 'js/arrowUpPage.js' %}"></script>
+{% endblock content %}

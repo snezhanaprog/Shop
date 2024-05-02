@@ -1,0 +1,62 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block css%}
+<link rel="stylesheet" type="text/css" href="{% static 'css/feedback.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/interface.css' %}">
+<link rel="stylesheet" href="{% static 'css/header.css' %}">
+{% endblock css%}
+{% block userinfo %}
+<h3>{{user.username}}</h3>
+<p>{{user.email}}</p>
+{% endblock userinfo %}
+{% block content %}
+
+{% for msg in messages %}
+<p class="achivment-event">{{msg}}</p>
+{% endfor %}
+
+
+<main>
+    <div class="container container-feedback">
+        <h1>Ответим на ваши вопросы</h1>
+        <form action="" class="feedback__input-list">
+
+            <div class="feedback__input-item">
+                <label for="name">Имя</label>
+                <input type="text" id="name">
+            </div>
+            <div class="feedback__input-item">
+                <label for="email">Почта</label>
+                <input type="email" name="email" id="email">
+            </div>
+            <div class="feedback__input-item">
+                <label for="telegram">Телеграм</label>
+                <input type="text" name="telegram" id="telegram">
+            </div>
+            <div class="feedback__input-item">
+                <label for="text">Сообщение</label>
+                <input type="text" name="text" id="text">
+            </div>
+
+            <input type="submit" value="Отправить" class="feedback__input-item__submit">
+
+
+        </form>
+
+    </div>
+
+</main>
+<footer>
+    <a href="https://github.com/Erubarm">
+        <img src="{% static 'icons/icon-github.svg' %}" alt="github icon">
+    </a>
+    <a href="https://t.me/KKom3 ">
+        <img src="{% static 'icons/icon-telegram.svg' %}" alt="telegram icon">
+    </a>
+    <a href="https://vk.com/pomianem_xex">
+        <img src="{% static 'icons/icon-vk.svg' %}" alt="VK icon">
+    </a>
+</footer>
+
+
+{% endblock %}

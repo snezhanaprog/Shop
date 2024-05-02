@@ -1,0 +1,90 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block css%}
+<link rel="stylesheet" type="text/css" href="{% static 'css/store.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/interface.css' %}">
+<link rel="stylesheet" href="{% static 'css/header.css' %}">
+{% endblock css%}
+{% block userinfo %}
+<h3>{{user.username}}</h3>
+<p>{{user.email}}</p>
+{% endblock userinfo %}
+{% block content %}
+
+{% for msg in messages %}
+<p class="achivment-event">{{msg}}</p>
+{% endfor %}
+
+<div class="container container-main main">
+
+    <div>
+        <!-- TODO поиск и фильтрация -->
+    </div>
+
+    <h1>Товары</h1>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <div class="store-search">
+            <input name="search_value" class="store-search__input"/>
+            <button type="submit" name="search"><img src="{% static 'icons/icon-search.svg' %}" alt=""></button>
+        </div>
+        <div class="sort-event">
+            <button class="sort">Сортировка по <img src="/static/icons/arrow-down.svg" alt="arrow button"></button>
+            <ul class="sort-list sort-list__hide">
+                <li>
+                    <button>По алфавиту <img src="/static/icons/arrowSort-down.svg" alt=""></button>
+                </li>
+                <li>
+                    <button>По цене <img src="/static/icons/arrowSort-down.svg" alt="arrow sort up"></button>
+                </li>
+            </ul>
+        </div>
+
+
+    </form>
+    <div class="container__list-shop">
+        {% for product in products %}
+        <div class="list-shop__product">
+            <img class="product__img" src="{{product.image.url}}"/>
+            <div class="list-shop__product__description">
+                <a href="{% url 'product_details' product.id %}">
+
+                    <p class="product__title">{{product.name}}</p>
+                    <p class="product__cost">{{product.price|floatformat:2}}</p>
+                </a>
+
+                {% if request.user.is_authenticated %}
+                {% if product in order_products %}
+                <a class="product__btn-cart" href="{% url 'cart' %}">В корзину</a>
+                {% else %}
+                <button data-action="add" data-product="{{product.id}}" class="product__btn-add actionBtn">
+                    Добавить в корзину
+                </button>
+                {% endif %}
+                {% endif %}
+                <!--<a href="{% url 'product_details' product.id %}">
+                    <button class="product__btn-etc">Подробнее</button>
+                </a>       / Сделать по нажатию по карточке => удалить кнопку подробнее /             -->
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="line-button-page-up">
+        <button class="pageUp"><img src="/static/icons/arrowSort-up.svg" alt="arrow up"></button>
+    </div>
+</div>
+<footer>
+    <a href="https://github.com/Erubarm">
+        <img src="{% static 'icons/icon-github.svg' %}" alt="github icon">
+    </a>
+    <a href="https://t.me/KKom3 ">
+        <img src="{% static 'icons/icon-telegram.svg' %}" alt="telegram icon">
+    </a>
+    <a href="https://vk.com/pomianem_xex">
+        <img src="{% static 'icons/icon-vk.svg' %}" alt="VK icon">
+    </a>
+</footer>
+<script type="text/javascript" src="{% static 'js/store.js' %}">
+</script>
+<script src="{% static 'js/arrowUpPage.js' %}"></script>
+{% endblock content %}

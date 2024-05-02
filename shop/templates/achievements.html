@@ -1,0 +1,53 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block css%}
+<link rel="stylesheet" type="text/css" href="{% static 'css/interface.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/header.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/achivement.css' %}">
+
+{% endblock css%}
+{% block userinfo %}
+<h3>{{user.username}}</h3>
+<p>{{user.email}}</p>
+{% endblock userinfo %}
+{% block content %}
+
+{% for msg in messages %}
+<p class="achivment-event">{{msg}}</p>
+{% endfor %}
+
+
+<div class="container container-achivement">
+    <ul class="achivement-list">
+        {% for achie in achievements %}
+        <li class="achivement-item">
+
+            <span class="achivement-item__title">{{achie.title}}</span>
+            <p class="achivement-item__description">{{achie.description}}</p>
+            <span class="achivement-item__date">{{achie.date_added}}</span>
+
+        </li>
+        {% endfor %}
+    </ul>
+
+</div>
+
+
+<div class="line-button-page-up">
+    <button class="pageUp"><img src="/static/icons/arrowSort-up.svg" alt="arrow up"></button>
+</div>
+<footer>
+    <a href="https://github.com/Erubarm">
+        <img src="{% static 'icons/icon-github.svg' %}" alt="github icon">
+    </a>
+    <a href="https://t.me/KKom3 ">
+        <img src="{% static 'icons/icon-telegram.svg' %}" alt="telegram icon">
+    </a>
+    <a href="https://vk.com/pomianem_xex">
+        <img src="{% static 'icons/icon-vk.svg' %}" alt="VK icon">
+    </a>
+</footer>
+
+<script src="{% static 'js/arrowUpPage.js' %}"></script>
+
+{% endblock content %}

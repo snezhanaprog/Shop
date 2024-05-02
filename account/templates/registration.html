@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css%}
+<link rel="stylesheet" type="text/css" href="{% static 'css/interface.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/registration.css' %}">
+{% endblock css%}
+{% block content %}
+
+<div class="main">
+    <div class="container">
+        <div class="form">
+            <div class="form-inner-content">
+                <h1 class="form__main-title">Регистрация</h1>
+                <form method="POST">
+                    <div class="form__inputs-list">
+                        <div class="form__item">
+                            <label>Имя</label>
+                            {{form.username}}
+                        </div>
+                        <div class="form__item">
+                            <label>Почта</label>
+                            {{form.email}}
+                        </div>
+                        <div class="form__item">
+                            <label>Пароль</label>
+                            {{form.password1}}
+                        </div>
+                        <div class="form__item">
+                            <label>Подтвердите пароль</label>
+                            {{form.password2}}
+                        </div>
+                    </div>
+                    {% csrf_token %}
+                    {% if message != None %}
+                            <div class="message-invalid">{{message}}</div>
+                    {% endif %}
+                    <input type="submit" value="Зарегистрироваться" class="form__button">
+                </form>
+                <a href="{% url 'authorization' %}" class="link__registration">Зарегистрирован? Авторизуйся!</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

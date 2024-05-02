@@ -1,0 +1,5 @@
+.link__auth {
+    background: var(--Grey-100);
+    padding: 32px 128px;
+    border-radius: 5px;
+}
