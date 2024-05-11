@@ -1,126 +1,139 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
+from django.views import View
+from django.views.generic.base import TemplateView
+from django.views.generic import CreateView, UpdateView, DeleteView, ListView, DetailView
 from .models import *
+from .utils import UserContextMixin
 import json
-from account.urls import *
-from django.core.files.storage import FileSystemStorage
-from .forms import CommentForm
 from django.contrib import messages
 
-def get_product_filter_min(mas):
-    n = len(mas)
-    products = list(mas)
-    for i in range(n - 1):
-        for j in range(n - i - 1):
-            if products[j].price > products[j + 1].price:
-                products[j], products[j + 1] = products[j + 1], products[j]
-    return products
 
+class CartView(View):
+    template_name = 'cart.html'
 
-def get_product_filter_max(mas):
-    n = len(mas)
-    products = list(mas)
-    for i in range(n - 1):
-        for j in range(n - i - 1):
-            if products[j].price < products[j + 1].price:
-                products[j], products[j + 1] = products[j + 1], products[j]
-    return products
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            user = request.user
+            order, created = Order.objects.get_or_create(user=user, complete=False)
+            order_products = order.orderproduct_set.all()
+            count_orderproducts = order.get_cart_total_quantity
+            count = order.get_cart_total - order.get_cart_total / 100 * 5
+        else:
+            order_products = []
+            order = {
+                'get_cart_total': 0,
+                'get_cart_products': 0,
+            }
+            count_orderproducts = 0
+            count = 0
 
-def cart(request):
-    if request.user.is_authenticated:
-        user = request.user
-        order, created = Order.objects.get_or_create(user=user, complete=False)
-        order_products = order.orderproduct_set.all()
-        count_orderproducts = order.get_cart_total_quantity
-        count = order.get_cart_total - order.get_cart_total / 100 * 5
-    else:
-        order_products = []
-        order = {
-            'get_cart_total': 0,
-            'get_cart_products': 0,
+        context = {
+            'order_products': order_products,
+            'count_orderproducts': count_orderproducts,
+            'order': order,
+            'count': count,
+            'user': request.user,
         }
-        count_orderproducts = 0
-        count = 0
-    context = {
-        'order_products': order_products,
-        'count_orderproducts': count_orderproducts,
-        'order': order,
-        'count': count,
-        'user': request.user,
-    }
-
-    return render(request, 'cart.html', context)
-
-def store(request):
-    products = Product.objects.all()
-    order_products = []
-    if request.user.is_authenticated:
-        user = request.user
-        order, created = Order.objects.get_or_create(user=user, complete=False)
-        order_products = order.get_products
-    if 'filter_min' in request.POST:
-        products = get_product_filter_min(products)
-    elif 'filter_max' in request.POST:
-        products = get_product_filter_max(products)
-    elif 'search' in request.POST:
-        search_value = request.POST.get('search_value')
-        products = products.filter(name__icontains=search_value)
-    context = {
-        'products': products,
-        'order_products': order_products,
-        'user': request.user,
-    }
-    return render(request, 'store.html', context)
+        return render(request, self.template_name, context)
 
 
-def face_page(request):
-    context = {'user': request.user}
-    return render(request, 'face-page.html',context)
+class StoreView(View):
+    template_name = 'store.html'
 
-def about(request):
-    context = {'user': request.user}
-    return render(request, 'about.html', context)
+    def get_order_products(self, user):
+        if user.is_authenticated:
+            order, created = Order.objects.get_or_create(user=user, complete=False)
+            return order.get_products
+        return []
 
-def feedback(request):
-    context = {'user': request.user}
-    return render(request, 'feedback.html', context)
-
-def contacts(request):
-    context = {'user': request.user}
-    return render(request, 'contacts.html', context)
-def achievements(request):
-    context = {
-        'achievements': Achievement.objects.filter(user=request.user),
-        'user': request.user
-    }
-    return render(request, 'achievements.html', context)
-
-def checkout(request):
-    if request.user.is_authenticated:
-        user = request.user
-        order, created = Order.objects.get_or_create(user=user, complete=False)
-        products = order.orderproduct_set.all()
-    else:
-        products = []
-        order = {
-            'get_cart_total': 0,
-            'get_cart_products': 0
+    def get_context_data(self, request, products, order_products):
+        return {
+            'products': products,
+            'order_products': order_products,
+            'user': request.user,
         }
-    context = {
-        'products': products,
-        'order': order,
-        'user': request.user
-    }
-    return render(request, 'checkout.html', context)
+
+    def get_products(self, request):
+        products = Product.objects.all()
+        filter_option = request.POST.get('filter')
+        if filter_option == 'min':
+            products = products.order_by('price')
+        elif filter_option == 'max':
+            products = products.order_by('-price')
+        elif 'search' in request.POST:
+            search_value = request.POST.get('search_value')
+            products = products.filter(name__icontains=search_value)
+        return products
+
+    def get(self, request, *args, **kwargs):
+        products = Product.objects.all()
+        order_products = self.get_order_products(request.user)
+        context = self.get_context_data(request, products, order_products)
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        products = self.get_products(request)
+        order_products = self.get_order_products(request.user)
+        context = self.get_context_data(request, products, order_products)
+        return render(request, self.template_name, context)
+
+
+class FacePageView(UserContextMixin, TemplateView):
+    template_name = 'face-page.html'
+
+
+class AboutView(UserContextMixin, TemplateView):
+    template_name = 'about.html'
+
+
+class FeedbackView(UserContextMixin, TemplateView):
+    template_name = 'feedback.html'
+
+
+class ContactsView(UserContextMixin, TemplateView):
+    template_name = 'contacts.html'
+
+
+class Achievements(ListView):
+    model = Achievement
+    context_object_name = 'achievements'
+    template_name = 'achievements.html'
+
+    def get_queryset(self):
+        return Achievement.objects.filter(user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.request.user
+        return context
+
+class Checkout(View):
+    template_name = 'checkout.html'
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            order, created = Order.objects.get_or_create(user=request.user, complete=False)
+            products = order.orderproduct_set.all()
+        else:
+            products = []
+            order = {'get_cart_total': 0, 'get_cart_products': 0}
+
+        context = {
+            'products': products,
+            'order': order,
+            'user': request.user
+        }
+        return render(request, self.template_name, context)
+
 
 def add_item(request):
     data = json.loads(request.body)
     productId = data['productId']
     action = data['action']
 
-    user = request.user
     product = Product.objects.get(id=productId)
-    order, created = Order.objects.get_or_create(user=user, complete=False)
+    order, created = Order.objects.get_or_create(user=request.user, complete=False)
     orderProduct, created = OrderProduct.objects.get_or_create(order=order, product=product)
 
     if action == 'add':
@@ -130,68 +143,68 @@ def add_item(request):
 
     orderProduct.save()
 
-    if orderProduct.quantity <= 0:
-        orderProduct.delete()
-    elif action == 'remove-all':
+    if orderProduct.quantity <= 0 or action == 'remove-all':
         orderProduct.delete()
 
-    return JsonResponse("Item update", safe=False)
+    return JsonResponse("Товар добавлен", safe=False)
 
 
-def product_details(request, id):
-    product = Product.objects.get(id=id)
-    comments = Comment.objects.filter(product=product)
-    if request.user.is_authenticated:
-        if request.method == 'POST':
-            user = request.user
-            product = Product.objects.get(id=id)
-            order, created = Order.objects.get_or_create(user=user, complete=False)
-            orderProduct, created = OrderProduct.objects.get_or_create(order=order, product=product)
-            orderProduct.quantity += 1
-            orderProduct.save()
-        action, created = Action.objects.get_or_create(user=request.user)
-        if (action.count_details_view == 0):
+class ProductDetail(View):
+    template_name = 'details.html'
+
+    def get_object(self, id):
+        return get_object_or_404(Product, id=id)
+
+    def get(self, request, id, *args, **kwargs):
+        product = self.get_object(id)
+        comments = Comment.objects.filter(product=product)
+        context = {
+            'product': product,
+            'comments': comments,
+            'user': request.user,
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request, id, *args, **kwargs):
+        product = self.get_object(id)
+        order, created = Order.objects.get_or_create(user=request.user, complete=False)
+        orderProduct, created = OrderProduct.objects.get_or_create(order=order, product=product)
+        orderProduct.quantity += 1
+        orderProduct.save()
+        self.handle_achievements(request.user)
+        return self.get(request, id)
+
+    def handle_achievements(self, user):
+        action, created = Action.objects.get_or_create(user=user)
+        achievements = {
+            0: ("Молодец, заинтересовался", "Получено за первый просмотр подробного описания товара "),
+            9: ("Начинающий следопыт", "Получено за 10-ый просмотр подробного описания товара"),
+            25: ("Вот это ты любопытный)", "Получено за 25-ый просмотр подробного описания товара"),
+        }
+        if action.count_details_view in achievements:
+            title, description = achievements[action.count_details_view]
             achie = Achievement.objects.create(
-                title="Молодец, заинтересовался",
-                description="Получено за первый просмотр подробного описания товара ",
-                user=request.user
+                title=title,
+                description=description,
+                user=user
             )
-            messages.success(request, "Молодец, заинтересовался")
-        elif (action.count_details_view == 9):
-            achie = Achievement.objects.create(
-                title="Начинающий следопыт",
-                description="Получено за 10-ый просмотр подробного описания товара",
-                user=request.user
-            )
-            messages.success(request, "Начинающий следопыт")
-        elif (action.count_details_view == 25):
-            achie = Achievement.objects.create(
-                title="Вот это ты любопытный)",
-                description="Получено за 25-ый просмотр подробного описания товара",
-                user=request.user
-            )
-            messages.success(request, "Вот это ты любопытный)")
         action.count_details_view += 1
         action.save()
-    context = {
-        'product': product,
-        'comments': comments,
-        'user': request.user,
-    }
-    return render(request, 'details.html', context)
 
-def comments(request,id):
-    product = Product.objects.get(id=id)
-    comments = Comment.objects.filter(product=product)
-    #images = [i.image for i in comments]
-    context = {
-        'product': product,
-        'comments': comments,
-        'user': request.user,
-        #'images': images,
-    }
 
-    return render(request, 'comments.html', context)
+class ProductCommentsView(DetailView):
+    model = Product
+    template_name = 'comments.html'
+    context_object_name = 'product'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        product = self.object
+        comments = product.comment_set.all()
+        context['comments'] = comments
+        context['user'] = self.request.user
+        return context
+
 
 def create_comment(request,id):
     product = Product.objects.get(id=id)
@@ -230,3 +243,41 @@ def create_comment(request,id):
         'user': request.user
     }
     return render(request, 'create-comment.html', context)
+
+
+class CreateCommentView(View):
+    template_name = 'create-comment.html'
+
+    def get(self, request, id):
+        product = get_object_or_404(Product, pk=id)
+        context = {'product': product, 'user': request.user}
+        return render(request, self.template_name, context)
+
+    def post(self, request, id):
+        product = get_object_or_404(Product, pk=id)
+        if request.user.is_authenticated:
+            body = request.POST.get('comment-body')
+            image = request.FILES.get('image') if 'image' in request.FILES else None
+            comment = Comment.objects.create(
+                product=product,
+                body=body,
+                user=request.user,
+                image=image
+            )
+            action, created = Action.objects.get_or_create(user=request.user)
+            if action.count_comments_all == 0:
+                achie = Achievement.objects.create(
+                    title="Юный критик",
+                    description="Получено за написание своего первого отзыва к товару",
+                    user=request.user
+                )
+            elif action.count_comments_all == 9:
+                achie = Achievement.objects.create(
+                    title="Критик с опытом",
+                    description="Получено за написание 10 отзывов",
+                    user=request.user
+                )
+            action.count_comments_all += 1
+            action.save()
+            return redirect('product_details', id=id)
+        return self.get(request, id)

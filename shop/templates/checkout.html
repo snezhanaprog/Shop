@@ -1,6 +1,10 @@
 {% extends 'main.html' %}
 {% load static %}
-    {% block css%}<link rel="stylesheet" type="text/css" href="{% static 'css/cart.css' %}">{% endblock css%}
+{% block css%}
+<link rel="stylesheet" type="text/css" href="{% static 'css/interface.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/header.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/cart.css' %}">
+{% endblock css%}
 {% block userinfo %}
 <h3>{{user.username}}</h3>
 <p>{{user.email}}</p>

@@ -3,8 +3,10 @@ from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
 
+
 def comment_directory_path(instance, filename):
     return 'photo/{0}/{1}'.format(instance.product.id, filename)
+
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
@@ -32,6 +34,7 @@ class Order(models.Model):
         orderproducts = self.orderproduct_set.all()
         result = [item.product for item in orderproducts]
         return result
+
 
 class Product(models.Model):
     name = models.CharField(max_length=200)
@@ -88,6 +91,7 @@ class Achievement(models.Model):
     description = models.CharField(max_length=500)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
+
 
 class Action(models.Model):
     count_comments_all = models.IntegerField(default=0)

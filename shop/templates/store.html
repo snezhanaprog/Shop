@@ -52,7 +52,6 @@
                     <p class="product__title">{{product.name}}</p>
                     <p class="product__cost">{{product.price|floatformat:2}}</p>
                 </a>
-
                 {% if request.user.is_authenticated %}
                 {% if product in order_products %}
                 <a class="product__btn-cart" href="{% url 'cart' %}">В корзину</a>
@@ -62,10 +61,7 @@
                 </button>
                 {% endif %}
                 {% endif %}
-                <!--<a href="{% url 'product_details' product.id %}">
-                    <button class="product__btn-etc">Подробнее</button>
-                </a>       / Сделать по нажатию по карточке => удалить кнопку подробнее /             -->
-            </div>
+        </div>
         </div>
         {% endfor %}
     </div>
